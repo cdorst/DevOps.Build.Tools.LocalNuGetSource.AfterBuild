@@ -43,7 +43,7 @@ namespace DevOps.Build.Tools.LocalNuGetSource.AfterBuild
                 if (File.Exists(zip)) File.Delete(zip);
                 CreateFromDirectory(tmpDir, zip);
                 Console.WriteLine("Uploading zip...");
-                await Upload(container, name, zip);
+                await Upload(container, $"{name}.zip", zip);
                 File.Delete(zip);
             }
         }
