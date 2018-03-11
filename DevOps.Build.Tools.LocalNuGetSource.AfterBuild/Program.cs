@@ -26,7 +26,7 @@ namespace DevOps.Build.Tools.LocalNuGetSource.AfterBuild
 
             // Upload each nupkg to CDN
             var dir = GetEnvironmentVariable("APPVEYOR_BUILD_FOLDER");
-            var files = EnumerateFiles(dir, " *.nupkg", SearchOption.AllDirectories);
+            var files = EnumerateFiles(dir, "*.nupkg", SearchOption.AllDirectories);
             foreach (var file in files)
             {
                 var name = file.Split('/').Last();
