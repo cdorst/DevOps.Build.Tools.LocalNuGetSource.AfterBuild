@@ -31,8 +31,8 @@ namespace DevOps.Build.Tools.LocalNuGetSource.AfterBuild
             {
                 var name = file.Split('/').Last();
                 var zip = GetTempFileName();
-                Console.WriteLine($"Uploading {zip}");
-                Delete(tmpDir, true);
+                Console.WriteLine($"Uploading {name}: {zip}");
+                if (Directory.Exists(tmpDir)) Delete(tmpDir, true);
                 CreateDirectory(tmpDir);
                 Copy(file, Combine(tmpDir, name));
                 CreateFromDirectory(tmpDir, zip);
