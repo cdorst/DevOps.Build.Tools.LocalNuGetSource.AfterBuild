@@ -29,13 +29,19 @@ namespace DevOps.Build.Tools.LocalNuGetSource.AfterBuild
             var files = EnumerateFiles(dir, "*.nupkg", SearchOption.AllDirectories);
             foreach (var file in files)
             {
-                var name = file.Split('/').Last();
+                var name = file.Split('\\').Last();
                 var zip = GetTempFileName();
                 Console.WriteLine($"Uploading {name}: {zip}");
                 if (Directory.Exists(tmpDir)) Delete(tmpDir, true);
+                Console.WriteLine($"Creating directory: {tmpDir}");
                 CreateDirectory(tmpDir);
-                Copy(file, Combine(tmpDir, name));
+                Console.WriteLine($"Creating directory: {tmpDir}");
+                var path = Combine(tmpDir, name);
+                Console.WriteLine($"Checking if file exists: {path}");
+                if (!File.Exists(path)) Copy(file, path);
+                Console.WriteLine("Creating zip...");
                 CreateFromDirectory(tmpDir, zip);
+                Console.WriteLine("Uploading zip...");
                 await Upload(container, name, zip);
                 File.Delete(zip);
             }
