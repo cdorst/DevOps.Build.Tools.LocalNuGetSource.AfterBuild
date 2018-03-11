@@ -40,6 +40,7 @@ namespace DevOps.Build.Tools.LocalNuGetSource.AfterBuild
                 Console.WriteLine($"Checking if file exists: {path}");
                 if (!File.Exists(path)) Copy(file, path);
                 Console.WriteLine("Creating zip...");
+                if (File.Exists(zip)) File.Delete(zip);
                 CreateFromDirectory(tmpDir, zip);
                 Console.WriteLine("Uploading zip...");
                 await Upload(container, name, zip);
