@@ -5,10 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static DevOps.ContentDelivery.Functions.UploadAzureBlob.BlobUploader;
 using static System.Environment;
-using static System.IO.Compression.ZipFile;
 using static System.IO.Directory;
-using static System.IO.File;
-using static System.IO.Path;
 
 namespace DevOps.Build.Tools.LocalNuGetSource.AfterBuild
 {
@@ -30,21 +27,8 @@ namespace DevOps.Build.Tools.LocalNuGetSource.AfterBuild
             foreach (var file in files)
             {
                 var name = file.Split('\\').Last();
-                var zip = GetTempFileName();
-                Console.WriteLine($"Uploading {name}: {zip}");
-                if (Directory.Exists(tmpDir)) Delete(tmpDir, true);
-                Console.WriteLine($"Creating directory: {tmpDir}");
-                CreateDirectory(tmpDir);
-                Console.WriteLine($"Creating directory: {tmpDir}");
-                var path = Combine(tmpDir, name);
-                Console.WriteLine($"Checking if file exists: {path}");
-                if (!File.Exists(path)) Copy(file, path);
-                Console.WriteLine("Creating zip...");
-                if (File.Exists(zip)) File.Delete(zip);
-                CreateFromDirectory(tmpDir, zip);
-                Console.WriteLine("Uploading zip...");
-                await Upload(container, $"{name}.zip", zip);
-                File.Delete(zip);
+                Console.WriteLine($"Uploading {name}...");
+                await Upload(container, $"{name}", file);
             }
         }
     }
